@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ayesha's Personal Assistant</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f2edff;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Chatbox Glass */
+#chatbox {
+    width: 450px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Purple Header */
+#chat-header {
+    background: #8b5cf6;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Messages Area */
+#messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #faf7ff;
+    min-height: 200px;
+    scrollbar-width: thin;
+    scrollbar-color: #8b5cf6 #f2edff;
+}
+
+/* Scrollbar for Webkit */
+#messages::-webkit-scrollbar {
+    width: 8px;
+}
+#messages::-webkit-scrollbar-track {
+    background: #f2edff;
+    border-radius: 4px;
+}
+#messages::-webkit-scrollbar-thumb {
+    background-color: #8b5cf6;
+    border-radius: 4px;
+}
+
+/* Message Bubbles */
+.msg {
+    padding: 12px 18px;
+    margin: 12px 0;
+    border-radius: 20px;
+    max-width: 80%;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.user {
+    background: #e5d4ff;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+.bot {
+    background: #d8ffd8;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+}
+
+/* Input Area */
+#input-container {
+    display: flex;
+    padding: 10px;
+    background: #f3eaff;
+    border-top: 1px solid #d5bfff;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Input box */
+#inputBox {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #d5bfff;
+    outline: none;
+    font-size: 15px;
+    background: white;
+}
+
+/* Purple Buttons */
+button {
+    background: #8b5cf6;
+    border: none;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s;
+    flex-shrink: 0;
+}
+
+button:hover {
+    background: #6d28d9;
+    transform: translateY(-2px);
+}
+
+/* Calendar Box */
+#calendarBox {
+    display: none;
+    position: absolute;
+    bottom: 110px;
+    right: 50px;
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 3px 20px rgba(0,0,0,0.15);
+}
+</style>
+</head>
+
+<body>
+
+<div id="chatbox">
+    <div id="chat-header">💜 Ayesha's Personal Assistant</div>
+
+    <div id="messages">
+        <div class="msg bot">Starting chat with Ayesha's Personal Assistant...</div>
+    </div>
+
+    <!-- Calendar Popup -->
+    <div id="calendarBox">
+        <input type="date" style="font-size:16px; padding:6px; border-radius:8px;">
+    </div>
+
+    <div id="input-container">
+        <input id="inputBox" type="text" placeholder="Type your message..." />
+        <button id="sendBtn">Send ✉️</button>
+        <button id="voiceBtn">Talk 🎤</button>
+        <button id="speakBtn">Speak 🔊</button>
+        <button id="calBtn">📅 Calendar</button>
+        <button id="clearBtn">Clear 🧹</button>
+    </div>
+</div>
+
+<script>
+// Ayesha Info
+const ayeshaInfo = {
+    name: "Ayesha Shahid",
+    education: "BSCS",
+    work: "Tuition Teacher, AI Expert, AI Agent Developer",
+    city: "Lahore, Pakistan",
+    likes: "Mango, Fruits, Carrots, AI & Technology",
+    dislikes: "Judging Others",
+    goals: "Master AI & Become Independent"
+};
+
+// Bot logic
+function botReply(userMsg) {
+    userMsg = userMsg.toLowerCase();
+    const now = new Date();
+
+    // Date & Time
+    if (userMsg.includes("date")) return `Today's date is: ${now.toLocaleDateString()}`;
+    if (userMsg.includes("time")) return `Current time: ${now.toLocaleTimeString()}`;
+
+    // Custom greetings & phrases
+    if (userMsg.includes("assalamu alaikum")) return "Walikum Assalam";
+    if (userMsg.includes("thank you")) return "Alhumdulilah";
+    if (userMsg.includes("bye")) return "Allah Hafiz";
+    if (userMsg.includes("good morning")) return "Good morning";
+    if (userMsg.includes("good night")) return "Good night";
+
+    // Personal info
+    if (userMsg.includes("your name")) return "I am your offline assistant.";
+    if (userMsg.includes("my name")) return `Your name is ${ayeshaInfo.name}`;
+    if (userMsg.includes("my education")) return ayeshaInfo.education;
+    if (userMsg.includes("my work")) return ayeshaInfo.work;
+    if (userMsg.includes("where do i live") || userMsg.includes("my city")) return ayeshaInfo.city;
+    if (userMsg.includes("my likes")) return ayeshaInfo.likes;
+    if (userMsg.includes("my dislikes")) return ayeshaInfo.dislikes;
+    if (userMsg.includes("my goals")) return ayeshaInfo.goals;
+
+    // Basic conversation
+    if (userMsg.includes("hello") || userMsg.includes("hi")) return "Hello Ayesha, how can I help you today?";
+    if (userMsg.includes("how are you")) return "I am fine. How are you?";
+
+    // Calculator
+    if (/^[0-9+\-*/ ().]+$/.test(userMsg)) {
+        try { return `Result: ${eval(userMsg)}`; }
+        catch { return "Error in calculation."; }
+    }
+
+    if (userMsg.includes("thanks")) return "You're welcome.";
+
+    return "Okay, continue...";
+}
+
+// UI handling
+function addMessage(text, type) {
+    const chat = document.getElementById("messages");
+    const msg = document.createElement("div");
+    msg.className = "msg " + type;
+    msg.innerText = text;
+    chat.appendChild(msg);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function sendMessage(speak=false) {
+    const input = document.getElementById("inputBox");
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "user");
+    input.value = "";
+
+    const reply = botReply(text);
+    addMessage(reply, "bot");
+
+    if (speak) speakMessage(reply);
+}
+
+// Clear chat
+function clearChat() {
+    document.getElementById("messages").innerHTML = '<div class="msg bot">Starting chat with Ayesha\'s Personal Assistant...</div>';
+}
+
+// Text-to-speech
+function speakMessage(text) {
+    let utter = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(utter);
+}
+
+function speakLast() {
+    const bots = document.querySelectorAll(".bot");
+    if (bots.length > 0) speakMessage(bots[bots.length-1].innerText);
+}
+
+// Button events
+document.getElementById("sendBtn").onclick = ()=>sendMessage(false);
+document.getElementById("speakBtn").onclick = speakLast;
+document.getElementById("clearBtn").onclick = clearChat;
+document.getElementById("inputBox").onkeydown = e => { if (e.key === "Enter") sendMessage(false); };
+
+// Speech-to-text
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SpeechRecognition) {
+    let rec = new SpeechRecognition();
+    rec.lang = "en-US";
+
+    document.getElementById("voiceBtn").onclick = ()=>rec.start();
+
+    rec.onresult = e => {
+        document.getElementById("inputBox").value = e.results[0][0].transcript;
+        sendMessage(true);
+    };
+}
+
+// Calendar toggle
+document.getElementById("calBtn").onclick = () => {
+    const box = document.getElementById("calendarBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+};
+</script>
+</body>
+</html>
